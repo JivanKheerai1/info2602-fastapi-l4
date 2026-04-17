@@ -50,6 +50,8 @@ class TodoResponse(SQLModel):
     text:str
     done: bool = False
 
+    categories:list['Category'] = Relationship(back_populates="todos", link_model=TodoCategory)
+
 class TodoUpdate(SQLModel):
     text: Optional[str] = None
     done: Optional[bool] = None
@@ -68,3 +70,12 @@ class Todo(SQLModel, table=True):
     
     def get_cat_list(self):
         return ', '.join([category.text for category in self.categories])
+    
+class CategoryCreate(SQLModel):
+    name:str
+    text:str
+
+class CategoryResponse(SQLModel):
+    id: Optional[int] = Field(primary_key=True, default=None)
+    name:str
+    text:str
